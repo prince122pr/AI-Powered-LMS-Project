@@ -1,7 +1,7 @@
-import { userModel } from "../models/user.model";
+import { userModel } from "../models/user.model.js";
 import validator from "validator"
 import bcrypt from "bcryptjs"
-import genToken from "../utils/generateToken";
+import genToken from "../utils/generateToken.js";
 
 export const registerController = async(req, res) =>{
      try {

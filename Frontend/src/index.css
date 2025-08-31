@@ -1,0 +1,36 @@
+@import "tailwindcss";
+
+@font-face {
+      font-family: f1;
+      src: url('./assets//fonts/Caveat-Regular.woff2');
+}
+
+@font-face {
+      font-family: f2;
+      src: url('./assets//fonts/NiceMicro-Medium.woff2');
+}
+
+@font-face {
+      font-family: f3;
+      src: url('./assets//fonts/poppins_latin_regular_400_2.woff2');
+}
+
+@font-face {
+      font-family: f4;
+      src: url('./assets//fonts/PPRadioGrotesk-Medium.woff2');
+}
+
+@font-face {
+      font-family: f5;
+      src: url('./assets//fonts/SuisseIntl-Book.otf');
+}
+
+html,
+body {
+      height: 100%;
+      width: 100%;
+      font-family: f1   ;
+}
+
+
+
