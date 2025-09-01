@@ -8,9 +8,13 @@ import { backendBaseURL } from "../App";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import { ClipLoader } from "react-spinners";
+import { useDispatch } from "react-redux";
+import { setUserData } from "../store/slices/userSlice";
 
 const Login = () => {
 const navigate = useNavigate();
+  const dispatch = useDispatch();
+
 
 let [loading, setLoading] = useState(false);
 
@@ -28,10 +32,13 @@ let [loading, setLoading] = useState(false);
     e.preventDefault();
     setLoading(true);
     try {
-      await axios.post(backendBaseURL + "/auth/login", form, {withCredentials:true});
+      let res = await axios.post(backendBaseURL + "/auth/login", form, {withCredentials:true});
       // console.log(res.data);
+      dispatch(setUserData(res.data));
       setLoading(false);
-      toast.success("Login Successful");
+      toast.success('Login Successfully!', {
+      position:"bottom-right"
+    })
       navigate("/");
     } catch (error) {
       console.log(error);
@@ -104,7 +111,7 @@ let [loading, setLoading] = useState(false);
             {loading?<ClipLoader size={20}/>:"Login"}
             </button>
 
-          <span className="cursor-pointer text-black text-sm">Forget Password?</span>
+          <span onClick={() => navigate('/forget-password')} className="cursor-pointer text-black text-sm">Forget Password?</span>
 
 
           <div className="flex items-center w-full max-w-sm gap-2 my-2">

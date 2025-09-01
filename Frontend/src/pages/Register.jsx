@@ -4,14 +4,17 @@ import google from "../assets/EdGine_Logos/Google-logo.png";
 import { IoEyeOffOutline, IoEyeOutline } from "react-icons/io5";
 import { NavLink} from "react-router-dom";
 import axios from "axios";
-import { backendBaseURL } from "../App";
+import { backendBaseURL } from "../App.jsx";
 import {toast} from "react-toastify"
 import { useNavigate } from "react-router-dom";
 import {ClipLoader} from "react-spinners"
+import { useDispatch } from "react-redux";
+import { setUserData } from "../store/slices/userSlice";
 
 const roles = ["student", "educator"];
 
 const Register = () => {  
+  const dispatch = useDispatch();
 
   const [loading, setLoading] = useState(false)
 
@@ -33,16 +36,20 @@ const Register = () => {
   };
 
   const handleSubmit = async(e) => {
+
     e.preventDefault();
     setLoading(true);
 
     try {
-        await axios.post(backendBaseURL + '/auth/register', form, {
+        let res = await axios.post(backendBaseURL + '/auth/register', form, {
         withCredentials: true,
       });
-      // console.log(result.data);
+      // console.log(res.data);
+      dispatch(setUserData(res.data))
       setLoading(false);
-      toast.success("Registered Successfully!");
+      toast.success('Registered Successfully!', {
+      position:"bottom-right"
+    })
       navigate('/');
       return
     } catch (error) {

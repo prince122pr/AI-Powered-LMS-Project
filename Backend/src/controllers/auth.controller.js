@@ -28,7 +28,7 @@ export const registerController = async(req, res) =>{
         httpOnly: true,
         secure: false,
         // secure: process.env.NODE_ENV === "production", // prod mein true, dev mein false,
-        sameSite: 'strict', 
+        sameSite: 'lax', 
         maxAge: 7 * 24 * 60 * 60 * 1000 // 7 days
      });
      return res.status(201).json({
@@ -57,7 +57,7 @@ export const loginController = async(req, res) =>{
            httpOnly: true,
            secure: false,
            // secure: process.env.NODE_ENV === "production", // prod mein true, dev mein false,
-           sameSite: 'strict', 
+           sameSite: 'lax', 
            maxAge: 7 * 24 * 60 * 60 * 1000 // 7 days
         });
 
@@ -71,8 +71,6 @@ export const loginController = async(req, res) =>{
     }
 
 
-
-
 } 
 
 
@@ -82,7 +80,7 @@ export const logoutController = (req, res) =>{
             httpOnly: true,
             secure: false,
             // secure: process.env.NODE_ENV === "production", // prod mein true, dev mein false,
-            sameSite: 'strict', 
+            sameSite: 'lax', 
          });
          return res.status(200).json({message: 'Logged Out Successfully!'})
     } catch (error) {
