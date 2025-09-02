@@ -71,7 +71,7 @@ const Register = () => {
         {/* Left */}
         <div className="md:w-1/2 w-full h-full flex flex-col items-center justify-center gap-2 py-10 px-6">
           <div className="w-full flex flex-col items-center gap-1">
-            <h1 className="font-bold text-gray-900 text-3xl">Create Account</h1>
+            <h1 className="font-[f1] font-bold text-gray-900 text-3xl">Create Account</h1>
             <h2 className="text-gray-500 text-lg">Sign up to get started</h2>
           </div>
 

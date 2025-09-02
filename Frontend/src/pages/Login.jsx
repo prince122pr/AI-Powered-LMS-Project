@@ -57,7 +57,7 @@ let [loading, setLoading] = useState(false);
         {/* Left */}
         <div className="md:w-1/2 w-full h-full flex flex-col items-center justify-center gap-2 py-10 px-6">
           <div className="w-full flex flex-col items-center gap-1">
-            <h1 className="font-bold text-gray-900 text-3xl">Welcome Back</h1>
+            <h1 className="font-bold text-gray-900 text-3xl font-[f1]">Welcome Back</h1>
             <h2 className="text-gray-500 text-lg">Login to your account</h2>
           </div>
 

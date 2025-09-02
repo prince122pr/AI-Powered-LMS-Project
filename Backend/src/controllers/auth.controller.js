@@ -2,6 +2,7 @@ import { userModel } from "../models/user.model.js";
 import validator from "validator"
 import bcrypt from "bcryptjs"
 import genToken from "../utils/generateToken.js";
+import { sendMail } from "../utils/sendEmail.js";
 
 export const registerController = async(req, res) =>{
      try {
@@ -85,5 +86,71 @@ export const logoutController = (req, res) =>{
          return res.status(200).json({message: 'Logged Out Successfully!'})
     } catch (error) {
         return res.status(500).json({message: 'Error in Logging Out!', error})
+    }
+}
+
+
+export const sendOTPController = async(req, res) =>{
+    try {
+        let {email} = req.body;
+        let user = await userModel.findOne({email});
+        if(!user) return res.status(400).json({message:'User Not Found!'})  
+
+        const otp = Math.floor(1000 + Math.random() * 9000).toString();
+
+        user.resetOTP = otp;
+        user.otpExpires = Date.now() + 5 * 60 * 1000;   // 5 minutes from now   
+        user.otpVerified = false;
+        await user.save();
+
+        await sendMail(email, otp);
+        return res.status(200).json({message: 'OTP Sent to Email!', email})
+}
+catch (error) {
+        return res.status(500).json({message: 'Error in Sending OTP!', error})
+    }
+
+}
+
+
+export const verifyOTPController = async (req, res) => {
+    try {
+       let { email, otp } = req.body;
+       console.log(email, otp);
+       
+        let user = await userModel.findOne({email});
+        console.log(user);
+        
+        if(!user) return res.status(400).json({message:'User Not Found!'});
+
+        if(user.resetOTP !== otp || user.otpExpires < Date.now()){
+            return res.status(400).json({message:'Invalid or Expired OTP!'});
+        }
+        user.otpVerified = true;
+        user.resetOTP = undefined;
+        user.otpExpires = undefined;
+        await user.save();
+        return res.status(200).json({message: 'OTP Verified Successfully!'});
+   } catch (error) {
+        return res.status(500).json({message: 'Error in Verifying OTP!', error})
+   }   
+}
+
+
+export const resetPasswordController = async (req, res) => {
+    try {
+    let { email, newPassword } = req.body;
+    let user = await userModel.findOne({email});
+    if(!user) return res.status(400).json({message:'User Not Found!'});
+    if(!user.otpVerified) return res.status(400).json({message:'OTP Not Verified!'});
+    if(newPassword.length<8) return res.status(400).json({message:'Enter Strong Password!'});
+
+    let hashedPassword = await bcrypt.hash(newPassword, 10);
+    user.password = hashedPassword;
+    user.otpVerified = false;
+    await user.save();
+    return res.status(200).json({message: 'Password Reset Successfully!'});
+    } catch (error) {
+        return res.status(500).json({message: 'Error in Resetting Password!', error})
     }
 }

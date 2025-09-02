@@ -1,33 +1,47 @@
 import mongoose from "mongoose";
 
-let userSchema = mongoose.Schema({
+let userSchema = mongoose.Schema(
+  {
     name: {
-        type: String,
-        required:  true,
+      type: String,
+      required: true,
     },
     email: {
-        type: String,
-        required:  true,
-        unique: true
+      type: String,
+      required: true,
+      unique: true,
     },
     password: {
-        type: String,
-        required:  true,
+      type: String,
+      required: true,
     },
     role: {
-        type: String,
-        enum: ["student", "educator"],
-        required:  true,
+      type: String,
+      enum: ["student", "educator"],
+      required: true,
     },
     imageUrl: {
-        type: String,
-        default: ""
+      type: String,
+      default: "",
     },
-    enrolledCourses: [{
+    enrolledCourses: [
+      {
         type: mongoose.Schema.Types.ObjectId,
-        ref: "Course"
-    }]
+        ref: "Course",
+      },
+    ],
+    resetOTP: {
+      type: String,
+    },
+    otpExpires: {
+      type: Date,
+    },
+    otpVerified: {
+      type: Boolean,
+      default: false,
+    },
+  },
+  { timestamps: true }
+);
 
-},{timestamps: true});
-
-export const userModel = mongoose.model('User', userSchema)
+export const userModel = mongoose.model("User", userSchema);
