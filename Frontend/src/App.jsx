@@ -1,4 +1,4 @@
-// import { useEffect } from "react"
+
 import getCurrentUser from "./customHooks/getCurrentUser"
 import MainRoutes from "./Routes/MainRoutes"
 
@@ -12,9 +12,6 @@ const App = () => {
   return (
     <div className="min-h-screen">
 
-      
-
-       {/* <Navbar/> */}
        <MainRoutes/>
     </div>
   )
