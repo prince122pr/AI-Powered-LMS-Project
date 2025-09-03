@@ -154,3 +154,35 @@ export const resetPasswordController = async (req, res) => {
         return res.status(500).json({message: 'Error in Resetting Password!', error})
     }
 }
+
+
+export const googleAuthController = async(req, res) => {
+    try {
+        const {name, email, role} = req.body;
+        let user = await userModel.findOne({email});
+
+        if(!user){
+            user = await userModel.create({
+                name,
+                email,
+                role
+            })
+        }
+
+// for both cases generate token : register or login case
+         let token = genToken(user);
+     res.cookie('token', token, {
+        httpOnly: true,
+        secure: false,
+        // secure: process.env.NODE_ENV === "production", // prod mein true, dev mein false,
+        sameSite: 'lax', 
+        maxAge: 7 * 24 * 60 * 60 * 1000 // 7 days
+     });
+
+     return res.status(200).json(user)
+
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({message: 'Google Auth Error', error})
+    }
+}
