@@ -142,7 +142,7 @@ const Navbar = () => {
                   <div className="w-9 h-9 rounded-full bg-gradient-to-r from-orange-500 to-red-600 flex items-center justify-center overflow-hidden">
                     <IoPersonCircleOutline className="text-2xl text-white" />
                   </div>
-                  <span className="group-hover:text-orange-400 transition-colors">{userData.name.slice(0,8)}</span>
+                  <span className="group-hover:text-orange-400 transition-colors">{userData?.name?.slice(0,8)}</span>
                 </div>
 
                 {/* Dropdown */}

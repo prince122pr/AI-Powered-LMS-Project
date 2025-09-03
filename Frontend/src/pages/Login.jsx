@@ -78,7 +78,7 @@ const Login = () => {
   };
 
   return (
-    <div className="w-full bg-gradient-to-br from-gray-50 to-gray-100 flex items-center justify-center py-4 px-4 sm:px-6 lg:px-8 font-[f3]">
+    <div className="w-full min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 flex items-center justify-center py-4 px-4 sm:px-6 lg:px-8 font-[f3]">
       <div 
         className={`w-full max-w-5xl transition-all duration-700 transform ${formVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}
       >
