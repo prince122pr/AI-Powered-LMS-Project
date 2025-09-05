@@ -2,10 +2,11 @@ import { useEffect, useState } from "react";
 import heroImg from "../assets/Some_Images/bg-1.jpg";
 import logo from "../assets/EdGine_Logos/logo-png.png";
 import search from "../assets/Some_Images/search-icon.png";
+import { useNavigate } from "react-router-dom";
 
 
 const HeroSection = () => {
-
+  const navigate = useNavigate();
       useEffect(() => {
     setIsVisible(true);
   }, []);
@@ -33,7 +34,7 @@ const HeroSection = () => {
    
                </button>
                <button 
-
+                  onClick={() => navigate("/courses")}
                  className="px-8 py-3 rounded-xl bg-transparent border-2 border-white text-white font-[f2] text-lg font-medium shadow-lg hover:bg-white/10 transition-all transform hover:-translate-y-1"
                >
                  Explore Courses

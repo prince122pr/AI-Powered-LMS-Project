@@ -13,6 +13,7 @@ import google from "../assets/EdGine_Logos/Google-logo.png";
 import { backendBaseURL } from "../App.jsx";
 import { setUserData } from "../store/slices/userSlice";
 import { auth, provider } from "../utils/firebase.js";
+import { currentUser } from "../store/actions/userActions.jsx";
 
 const roles = ["student", "educator"];
 
@@ -44,10 +45,14 @@ const Register = () => {
     setLoading(true);
 
     try {
-      let res = await axios.post(backendBaseURL + '/auth/register', form, {
+      await axios.post(backendBaseURL + '/auth/register', {...form, role}, {
         withCredentials: true,
       });
-      dispatch(setUserData(res.data));
+      // console.log(res.data);
+      
+      dispatch(currentUser())
+
+
       setLoading(false);
       toast.success('Registered Successfully!', {
         position: "bottom-right"

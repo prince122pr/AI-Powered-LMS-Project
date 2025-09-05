@@ -5,6 +5,10 @@ import Login from "../pages/Login";
 import { useSelector } from "react-redux";
 import Profile from "../pages/Profile";
 import ForgetPassword from "../pages/ForgetPassword";
+import Dashboard from "../pages/Educator/Dashboard";
+import CreateCourses from "../pages/Educator/CreateCourses";
+import Courses from "../pages/Educator/Courses";
+import EditCourses from "../pages/Educator/EditCourses";
 
 const MainRoutes = () => {
   const user = useSelector((store) => store.user.userData); // Adjust to your slice
@@ -36,6 +40,12 @@ const MainRoutes = () => {
       <Route path="/profile" element={user ? <Profile /> : <Navigate to="/login" replace />} />
       
       <Route path="/forget-password" element={<ForgetPassword/>} />
+
+      <Route path="/dashboard" element={user?.role === "educator" ? <Dashboard /> : <Navigate to="/login" replace />} />
+      <Route path="/create-course" element={user?.role === "educator" ? <CreateCourses /> : <Navigate to="/login"  />} />
+      <Route path="/update-course/:courseId" element={user?.role === "educator" ? <EditCourses /> : <Navigate to="/login" replace />} />
+      <Route path="/courses" element={user ? <Courses /> : <Navigate to="/login" replace />} />
+
     </Routes>
   );
 };
