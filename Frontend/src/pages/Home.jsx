@@ -16,7 +16,7 @@ const Home = () => {
   return (
     <div className="w-full overflow-hidden bg-gray-50">
 
-      <Navbar />
+      {/* <Navbar /> */}
 
       {/*Main section  */}
       <HeroSection/>

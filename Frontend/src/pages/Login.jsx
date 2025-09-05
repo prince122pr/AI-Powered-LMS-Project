@@ -12,6 +12,7 @@ import google from "../assets/EdGine_Logos/Google-logo.png";
 import { backendBaseURL } from "../App";
 import { setUserData } from "../store/slices/userSlice";
 import { auth, provider } from "../utils/firebase";
+import { currentUser } from "../store/actions/userActions";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -38,8 +39,9 @@ const Login = () => {
     e.preventDefault();
     setLoading(true);
     try {
-      let res = await axios.post(backendBaseURL + "/auth/login", form, { withCredentials: true });
-      dispatch(setUserData(res.data));
+      await axios.post(backendBaseURL + "/auth/login", form, { withCredentials: true });
+      // dispatch(setUserData(res.data));
+      dispatch(currentUser())
       setLoading(false);
       toast.success('Login Successfully!', {
         position: "bottom-right"

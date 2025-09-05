@@ -47,7 +47,7 @@ export const updateUser = async (req, res) => {
 
     // Update user in database
     const updatedUser = await userModel.findByIdAndUpdate(user._id, updateData, { new: true });
-    console.log(updatedUser);
+    // console.log(updatedUser);
     
 
     return res.status(200).json({

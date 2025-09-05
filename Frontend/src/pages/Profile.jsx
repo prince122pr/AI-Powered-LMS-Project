@@ -6,12 +6,13 @@ import { ClipLoader } from "react-spinners";
 import axios from "axios";
 import { toast } from "react-toastify";
 import { backendBaseURL } from "../App";
-import { setUserData } from "../store/slices/userSlice";
-import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
+import { useNavigate } from "react-router-dom";
+import { currentUser } from "../store/actions/userActions";
 
 const Profile = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const { userData } = useSelector((state) => state.user);
   const fileInputRef = useRef(null);
   
@@ -83,7 +84,7 @@ const Profile = () => {
         }
       );
       
-      dispatch(setUserData(response.data.user));
+      dispatch(currentUser());
       setLoading(false);
       toast.success("Profile updated successfully!", {
         position: "bottom-right"
@@ -112,7 +113,6 @@ const Profile = () => {
 
   return (
     <div className="min-h-screen bg-gray-100 flex flex-col">
-      <Navbar />
       
       <div className="flex-grow container mx-auto px-4 py-24 sm:px-6 lg:px-8  font-[f2]">
         <div 
@@ -323,7 +323,7 @@ const Profile = () => {
                 </p>
                 <button
                   type="button"
-                  onClick={() => window.location.href = '/courses'}
+                  onClick={() => navigate('/courses')}
                   className="mt-4 px-6 py-2 bg-gradient-to-r from-orange-500 to-red-600 text-white font-medium rounded-xl shadow-md hover:shadow-orange-500/20 transition-all duration-300"
                 >
                   Browse Courses

@@ -7,8 +7,12 @@ import { sendMail } from "../utils/sendEmail.js";
 export const registerController = async(req, res) =>{
      try {
         let {name, email, password, role} = req.body;
+        // console.log(req.body);
+        
 
     let isEmailExist = await userModel.findOne({email});
+    // console.log(isEmailExist);
+    
     if(isEmailExist) return res.status(400).json({message:'Email Already Registered!'})
 
     if(!validator.isEmail(email)) return res.status(400).json({message:'Enter Valid Email!'});
@@ -16,13 +20,16 @@ export const registerController = async(req, res) =>{
     if(password.length<8) return res.status(400).json({message:'Enter Strong Password!'});
     
     let hashedPassword = await bcrypt.hash(password, 10);
-
+    // console.log(hashedPassword);
+    
     let user = await userModel.create({
         name,
         email,
         password: hashedPassword,
         role
     })
+    // console.log(user);
+    
      
      let token = genToken(user);
      res.cookie('token', token, {
@@ -37,7 +44,9 @@ export const registerController = async(req, res) =>{
         user})
 
      } catch (error) {
+         console.log(error);
         return res.status(500).json({message: 'Error in Registering User!', error})
+        
      }
 }
 
