@@ -1,13 +1,14 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect} from "react";
 import { useLocation } from "react-router-dom";
 
 import Navbar from "./components/Navbar";
 import MainRoutes from "./Routes/MainRoutes";
 import useCreatorCourses from "./customHooks/getCreatorCourses";
+import useAllCourses from "./customHooks/getAllCourses";
 import { useDispatch, useSelector } from "react-redux";
 import { currentUser } from "./store/actions/userActions";
-import useAllCourses from "./customHooks/getAllCourses";
-
+import ScrollToTop from "./components/ScrollToTop";
+// import { getLectures } from "./store/actions/lectureActions";
 
 export const backendBaseURL = "http://localhost:8000/api/v1";
 
@@ -16,21 +17,34 @@ const App = () => {
   const location = useLocation(); // gives current path
   const [loadingUser, setLoadingUser] = useState(true);
 
-  let user = useSelector((state) => state.user.userData);
-
-  useEffect(() => {
-    !user && dispatch(currentUser());
-  },[dispatch, user])
-
-  useAllCourses()
+  const user = useSelector((state) => state.user.userData) || null;
   
-  // Call the hook to fetch and set creator courses in Redux
+
+  // Determine if current path is public (login/register)
+  const isPublicRoute = ["/login", "/register"].includes(location.pathname);
+
+  // Fetch current user only on protected routes
+  useEffect(() => {
+    if (!isPublicRoute && !user) {
+      dispatch(currentUser());
+    }
+  }, [dispatch, user, isPublicRoute]);
+
+  // Load all courses (public data)
+  useAllCourses();
+
+  // Load creator courses (if user is logged in)
+  
   useCreatorCourses();
 
-  // Optional: track loading state (if we want to show a loader)
+
+
+  // scroll to top
+  <ScrollToTop/>
+
+  // Optional: simple loader for app initialization
   useEffect(() => {
-    // Small delay to simulate fetch completion
-    const timer = setTimeout(() => setLoadingUser(false), 500); 
+    const timer = setTimeout(() => setLoadingUser(false), 500);
     return () => clearTimeout(timer);
   }, []);
 
@@ -42,12 +56,9 @@ const App = () => {
     );
   }
 
-  // Hide Navbar on these paths
-  const hideNavbar = ["/login", "/register"].includes(location.pathname);
-
   return (
     <div className="min-h-screen">
-      {!hideNavbar && <Navbar />}
+      {!isPublicRoute && <Navbar />}
       <MainRoutes />
     </div>
   );

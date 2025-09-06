@@ -8,3 +8,4 @@ export const userRouter = express.Router()
 userRouter.get('/getcurrentuser',isAuth ,getCurrentUser)
 userRouter.post('/profile',isAuth,upload.single("imageUrl") ,updateUser)
 
+    

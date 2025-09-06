@@ -161,7 +161,7 @@ const Navbar = () => {
                     </div>
                     <div 
                       className="flex items-center gap-3 px-4 py-2.5 rounded-lg hover:bg-white/10 cursor-pointer transition-all"
-                      onClick={() => handleNavigate("/courses")}
+                      onClick={() => handleNavigate("/enrolled-courses")}
                     >
                       <IoSchoolOutline className="text-xl text-orange-400" />
                       <span>My Courses</span>
@@ -288,7 +288,7 @@ const Navbar = () => {
 
       <div
         className="flex items-center gap-3 text-white py-2.5 px-3 rounded-lg hover:bg-white/10 hover:text-orange-400 transition-all"
-        onClick={() => handleNavigate("/courses")}
+        onClick={() => handleNavigate("/enrolled-courses")}
       >
         <IoSchoolOutline className="text-xl text-orange-400" />
         <span>My Courses</span>

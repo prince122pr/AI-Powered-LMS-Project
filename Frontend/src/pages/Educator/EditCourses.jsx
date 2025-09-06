@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import { backendBaseURL } from "../../App";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import { 
   FaGraduationCap, 
@@ -14,9 +14,12 @@ import {
 } from "react-icons/fa";
 import { MdTitle, MdDescription, MdCategory, MdAttachMoney } from "react-icons/md";
 import Navbar from "../../components/Navbar";
+import { getLectures } from "../../store/actions/lectureActions";
 
 const EditCourses = () => {
   const { courseId } = useParams();
+  const dispatch = useDispatch();
+
   const navigate = useNavigate();
   const user = useSelector((state) => state.user.userData);
   const [isVisible, setIsVisible] = useState(false);
@@ -36,50 +39,54 @@ const EditCourses = () => {
     isPublished: false
   });
 
+      useEffect(() => {
+        dispatch(getLectures(courseId))
+    }, [dispatch, courseId, courseData])
+
   // Animation effect
   useEffect(() => {
     setIsVisible(true);
   }, []);
 
   // Fetch course data
-  useEffect(() => {
-    const fetchCourse = async () => {
-      try {
-        setFetchLoading(true);
-        const response = await axios.get(`${backendBaseURL}/course/course/${courseId}`, {
-          withCredentials: true,
-        });
+  // useEffect(() => {
+  //   const fetchCourse = async () => {
+  //     try {
+  //       setFetchLoading(true);
+  //       const response = await axios.get(`${backendBaseURL}/course/course/${courseId}`, {
+  //         withCredentials: true,
+  //       });
         
-        const course = response.data;
+  //       const course = response.data;
         
-        setCourseData({
-          title: course.title || "",
-          subTitle: course.subTitle || "",
-          description: course.description || "",
-          category: course.category || "",
-          level: course.level || "Beginner",
-          price: course.price || "",
-          thumbnail: null, // We don't set the file object, just the preview
-          isPublished: course.isPublished || false
-        });
+  //       setCourseData({
+  //         title: course.title || "",
+  //         subTitle: course.subTitle || "",
+  //         description: course.description || "",
+  //         category: course.category || "",
+  //         level: course.level || "Beginner",
+  //         price: course.price || "",
+  //         thumbnail: null, // We don't set the file object, just the preview
+  //         isPublished: course.isPublished || false
+  //       });
         
-        if (course.thumbnail) {
-          setThumbnailPreview(course.thumbnail);
-        }
+  //       if (course.thumbnail) {
+  //         setThumbnailPreview(course.thumbnail);
+  //       }
         
-        setFetchError(null);
-      } catch (error) {
-        console.error("Error fetching course:", error);
-        setFetchError("Failed to load course data. Please try again later.");
-      } finally {
-        setFetchLoading(false);
-      }
-    };
+  //       setFetchError(null);
+  //     } catch (error) {
+  //       console.error("Error fetching course:", error);
+  //       setFetchError("Failed to load course data. Please try again later.");
+  //     } finally {
+  //       setFetchLoading(false);
+  //     }
+  //   };
 
-    if (courseId && user) {
-      fetchCourse();
-    }
-  }, [courseId, user]);
+  //   if (courseId && user) {
+  //     fetchCourse();
+  //   }
+  // }, [courseId, user]);
 
   const handleInputChange = (e) => {
     const { name, value, type, checked, files } = e.target;
