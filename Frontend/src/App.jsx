@@ -1,4 +1,4 @@
-import { useState, useEffect} from "react";
+import { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
 
 import Navbar from "./components/Navbar";
@@ -8,41 +8,27 @@ import useAllCourses from "./customHooks/getAllCourses";
 import { useDispatch, useSelector } from "react-redux";
 import { currentUser } from "./store/actions/userActions";
 import ScrollToTop from "./components/ScrollToTop";
-// import { getLectures } from "./store/actions/lectureActions";
 
 export const backendBaseURL = "http://localhost:8000/api/v1";
 
 const App = () => {
   const dispatch = useDispatch();
-  const location = useLocation(); // gives current path
+  const location = useLocation();
   const [loadingUser, setLoadingUser] = useState(true);
 
   const user = useSelector((state) => state.user.userData) || null;
-  
 
-  // Determine if current path is public (login/register)
   const isPublicRoute = ["/login", "/register"].includes(location.pathname);
 
-  // Fetch current user only on protected routes
   useEffect(() => {
     if (!isPublicRoute && !user) {
       dispatch(currentUser());
     }
   }, [dispatch, user, isPublicRoute]);
 
-  // Load all courses (public data)
   useAllCourses();
-
-  // Load creator courses (if user is logged in)
-  
   useCreatorCourses();
 
-
-
-  // scroll to top
-  <ScrollToTop/>
-
-  // Optional: simple loader for app initialization
   useEffect(() => {
     const timer = setTimeout(() => setLoadingUser(false), 500);
     return () => clearTimeout(timer);
@@ -58,6 +44,7 @@ const App = () => {
 
   return (
     <div className="min-h-screen">
+      <ScrollToTop />
       {!isPublicRoute && <Navbar />}
       <MainRoutes />
     </div>

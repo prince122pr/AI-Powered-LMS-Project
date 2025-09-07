@@ -38,7 +38,7 @@ export const verifyPayment = async (req, res) => {
         const {courseId, userId, razorpay_order_id} = req.body; 
         const orderInfo = await razorpay.orders.fetch(razorpay_order_id);
         if(orderInfo.status === "paid") {
-            con
+            
         }       
     } catch (error) {
         

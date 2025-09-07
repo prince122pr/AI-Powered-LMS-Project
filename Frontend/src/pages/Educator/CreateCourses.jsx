@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-
+import axios from "axios";
+import { backendBaseURL } from "../../App";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import {
@@ -17,6 +18,7 @@ import {
   MdAttachMoney,
 } from "react-icons/md";
 import Navbar from "../../components/Navbar";
+import { setAllCourses } from "../../store/slices/courseSlice";
 import { createCourses } from "../../store/actions/courseActions";
 
 const CreateCourses = () => {
@@ -48,43 +50,28 @@ const CreateCourses = () => {
 
     if (type === "file") {
       if (files[0]) {
-        setCourseData({
-          ...courseData,
-          thumbnail: files[0],
-        });
+        setCourseData({ ...courseData, thumbnail: files[0] });
 
         // Create preview URL
         const reader = new FileReader();
-        reader.onloadend = () => {
-          setThumbnailPreview(reader.result);
-        };
+        reader.onloadend = () => setThumbnailPreview(reader.result);
         reader.readAsDataURL(files[0]);
       }
     } else if (type === "checkbox") {
-      setCourseData({
-        ...courseData,
-        [name]: checked,
-      });
+      setCourseData({ ...courseData, [name]: checked });
     } else {
-      setCourseData({
-        ...courseData,
-        [name]: value,
-      });
+      setCourseData({ ...courseData, [name]: value });
     }
   };
 
   const removeThumbnail = () => {
-    setCourseData({
-      ...courseData,
-      thumbnail: null,
-    });
+    setCourseData({ ...courseData, thumbnail: null });
     setThumbnailPreview(null);
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    
     if (!courseData.title || !courseData.category) {
       toast.error("Title and category are required!");
       return;
@@ -108,7 +95,6 @@ const CreateCourses = () => {
 
       dispatch(createCourses(formData));
       toast.success("Course created successfully!");
-      
       navigate("/dashboard");
     } catch (error) {
       console.error("Error creating course:", error);
@@ -123,9 +109,7 @@ const CreateCourses = () => {
       <div className="min-h-screen bg-gradient-to-b from-gray-900 via-gray-800 to-gray-900">
         <Navbar />
         <div className="flex items-center justify-center h-[calc(100vh-80px)]">
-          <div className="text-white text-xl">
-            Please login to create courses
-          </div>
+          <div className="text-white text-xl">Please login to create courses</div>
         </div>
       </div>
     );
@@ -133,14 +117,11 @@ const CreateCourses = () => {
 
   return (
     <div className="min-h-screen pt-10 bg-gradient-to-b from-gray-900 via-gray-800 to-gray-900 text-white">
-
       <div className="max-w-7xl mt-10 mx-auto px-4 sm:px-6 lg:px-8 py-12">
         {/* Header */}
         <div
           className={`relative mb-10 transition-all duration-1000 ${
-            isVisible
-              ? "opacity-100 transform translate-y-0"
-              : "opacity-0 transform -translate-y-10"
+            isVisible ? "opacity-100 transform translate-y-0" : "opacity-0 transform -translate-y-10"
           }`}
         >
           <div className="flex items-center gap-3 mb-2">
@@ -155,24 +136,19 @@ const CreateCourses = () => {
             </h1>
           </div>
           <p className="text-white/70 ml-10">
-            Fill in the details below to create your new course. Fields marked
-            with * are required.
+            Fill in the details below to create your new course. Fields marked with * are required.
           </p>
         </div>
 
         {/* Form */}
         <div
           className={`bg-gradient-to-br from-gray-800 to-gray-900 rounded-xl shadow-xl border border-gray-700 overflow-hidden transition-all duration-1000 delay-300 ${
-            isVisible
-              ? "opacity-100 transform translate-y-0"
-              : "opacity-0 transform translate-y-10"
+            isVisible ? "opacity-100 transform translate-y-0" : "opacity-0 transform translate-y-10"
           }`}
         >
           <div className="px-6 py-4 border-b border-gray-700 flex items-center">
             <FaGraduationCap className="text-xl text-orange-500 mr-3" />
-            <h2 className="text-xl font-[f2] font-semibold text-white">
-              Course Information
-            </h2>
+            <h2 className="text-xl font-[f2] font-semibold text-white">Course Information</h2>
           </div>
 
           <form onSubmit={handleSubmit} className="p-6">
@@ -330,9 +306,7 @@ const CreateCourses = () => {
                   ) : (
                     <label className="flex flex-col items-center justify-center w-full h-40 px-4 py-6 rounded-lg border-2 border-dashed border-gray-600 bg-gray-700/30 hover:bg-gray-700/50 cursor-pointer transition-all">
                       <FaUpload className="text-2xl text-gray-400 mb-2" />
-                      <span className="text-gray-400">
-                        Click to upload thumbnail
-                      </span>
+                      <span className="text-gray-400">Click to upload thumbnail</span>
                       <input
                         type="file"
                         name="thumbnail"
