@@ -26,6 +26,8 @@ export const createCourse = async (req, res) => {
     if (req.file) {
       const fileData = fs.readFileSync(req.file.path);
       const uploaded = await uploadFile(fileData, uuidv4());
+      console.log(uploaded);
+      
       fs.unlinkSync(req.file.path);
       courseData.thumbnail = uploaded.url;
     }

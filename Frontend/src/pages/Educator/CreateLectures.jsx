@@ -60,6 +60,7 @@ function CreateLectures() {
       setIsPreviewFree(false);
     } catch (error) {
       console.error(error);
+      toast.error("Something went wrong! Maybe the file size exceeds 100 MB.");
     } finally {
       setLoading(false);
     }
@@ -79,6 +80,7 @@ function CreateLectures() {
 
     } catch (error) {
       console.log(error);
+      toast.error('Failed to deleted!')
     }
  }
 

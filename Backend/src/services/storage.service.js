@@ -13,6 +13,8 @@ export async function uploadFile(file, fileName) {
         fileName: fileName,
         folder: "EdGine_Images"
     })
+    console.log(response);
+    
     return response;
     } catch (error) {
         console.error("Error uploading file to ImageKit:", error);

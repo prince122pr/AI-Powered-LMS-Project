@@ -53,7 +53,7 @@ export const updateLecture = (lectureId, lectureData) => async (dispatch) => {
       }
     );
 
-    console.log("Updated Lecture:", res.data);
+    // console.log("Updated Lecture:", res.data);
 
     // Try different keys to extract courseId
     const courseId =
@@ -79,7 +79,7 @@ export const deleteLecture = (lectureId, courseId) => async (dispatch) => {
       { withCredentials: true }
     );
     
-    console.log("Deleted Lecture:", res.data);
+    // console.log("Deleted Lecture:", res.data);
 
     if (courseId) {
       await dispatch(getLectures(courseId));
