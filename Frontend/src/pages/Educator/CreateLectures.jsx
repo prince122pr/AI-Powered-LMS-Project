@@ -5,9 +5,12 @@ import { backendBaseURL } from "../../App";
 import { useDispatch, useSelector } from "react-redux";
 
 import { FaArrowLeft, FaEdit } from "react-icons/fa";
+import { MdDelete } from "react-icons/md";
+
 import { ClipLoader } from "react-spinners";
 import { toast } from "react-toastify";
 import { setLectures } from "../../store/slices/lectureSlice";
+import { deleteLecture, getLectures } from "../../store/actions/lectureActions";
 
 function CreateLectures() {
   const { courseId } = useParams();
@@ -19,6 +22,13 @@ function CreateLectures() {
   const [videoFile, setVideoFile] = useState(null);
   const [isPreviewFree, setIsPreviewFree] = useState(false);
   const [loading, setLoading] = useState(false);
+
+   // ✅ Fetch lectures on first render or when courseId changes
+  useEffect(() => {
+    if (courseId) {
+      dispatch(getLectures(courseId));
+    }
+  }, [courseId, dispatch]);
 
   // Create Lecture Handler
   const createLectureHandler = async () => {
@@ -39,7 +49,7 @@ function CreateLectures() {
           withCredentials: true,
         }
       )
-      console.log(result.data);
+      // console.log(result.data);
       
 
       dispatch(setLectures([...lectures, result.data.lecture]));
@@ -55,23 +65,22 @@ function CreateLectures() {
     }
   };
 
-  // // Fetch Lectures on Mount
-  // useEffect(() => {
-  //   const getLectures = async () => {
-  //     try {
-  //       const result = await axios.get(
-  //         `${backendBaseURL}/course/lecture/${courseId}`,
-  //         { withCredentials: true }
-  //       );
-  //       console.log(result.data.lectures);
+ const handleDelete = async (lectureId, courseId) => {
+    try {
+      if(window.confirm("Are you sure you want to delete this lecture?")){
+        const res = await dispatch(deleteLecture(lectureId, courseId));
+        if(res) {
+          toast.success("Lecture Deleted");
+        }
+        // console.log(res);
         
-  //       dispatch(setLectures(result.data.lectures || []));
-  //     } catch (error) {
-  //       console.error(error);
-  //     }
-  //   };
-  //   getLectures();
-  // }, [courseId, dispatch]);
+      }
+      return;
+
+    } catch (error) {
+      console.log(error);
+    }
+ }
 
   return (
     <div className="min-h-screen bg-[#12192A] flex items-center justify-center p-4">
@@ -147,12 +156,16 @@ function CreateLectures() {
               <span>
                 Lecture {index + 1}: {lecture.title}
               </span>
-              <FaEdit
-                className="text-gray-500 hover:text-blue-600 cursor-pointer"
+              <div className="flex gap-4 items-center">
+              <MdDelete onClick={() => handleDelete(lecture._id, courseId)} className="text-gray-500 text-lg hover:text-blue-600 cursor-pointer"/>
+              <FaEdit 
+                className="text-gray-500 text-[15px] hover:text-blue-600 cursor-pointer"
                 onClick={() =>
                   navigate(`/courses/${courseId}/edit-lecture/${lecture._id}`)
                 }
               />
+              </div>
+              
             </div>
           ))}
         </div>

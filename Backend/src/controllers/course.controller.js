@@ -311,6 +311,8 @@ export const removeLecture = async (req, res) => {
 
     // Find the lecture first
     const lecture = await lectureModel.findById(lectureId);
+    // console.log(lecture);
+    
     if (!lecture) {
       return res.status(404).json({ message: "Lecture not found" });
     }
@@ -330,10 +332,8 @@ export const removeLecture = async (req, res) => {
       }
     }
 
-    // Optional: Delete video from ImageKit or local storage if needed
-
     // Remove lecture from DB
-    await lecture.remove();
+    await lecture.deleteOne();
 
     return res.status(200).json({
       message: "Lecture removed successfully",

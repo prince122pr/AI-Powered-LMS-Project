@@ -78,7 +78,7 @@ export const deleteLecture = (lectureId, courseId) => async (dispatch) => {
       `${backendBaseURL}/course/delete-lecture/${lectureId}`,
       { withCredentials: true }
     );
-
+    
     console.log("Deleted Lecture:", res.data);
 
     if (courseId) {
