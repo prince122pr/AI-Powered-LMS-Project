@@ -5,6 +5,10 @@ import { useDispatch, useSelector } from "react-redux";
 import { setSelectedCourse } from "../store/slices/courseSlice";
 import { FaStar } from "react-icons/fa6";
 import { getLectures } from "../store/actions/lectureActions";
+import axios from "axios";
+import { backendBaseURL } from "../App";
+import { toast } from "react-toastify";
+import { currentUser } from "../store/actions/userActions";
 
 const ViewCourse = () => {
   const { courseId } = useParams();
@@ -18,11 +22,21 @@ const ViewCourse = () => {
   const [error, setError] = useState(null);
   const [isEnrolled, setIsEnrolled] = useState(false);
 
+const checkEnrolledCourse = () => {
+  const verify = userData?.enrolledCourses?.some(
+    (c) => c.toString() === courseId.toString()
+  );
+  if (verify) setIsEnrolled(true); 
+};
+
 
     useEffect(() => {
-      dispatch(getLectures(courseId))
-  }, [dispatch, courseId]
+      dispatch(getLectures(courseId));
+      checkEnrolledCourse();
+  }, [dispatch, courseId, userData, loading]
 )
+
+
 
   // ✅ Pick course directly from allCourses and push to Redux
   useEffect(() => {
@@ -58,8 +72,70 @@ const ViewCourse = () => {
     );
   }
 
+const handleEnroll = async (userId, courseId) => {
+  console.log(courseId);
+
+  try {
+    let res = await axios.post(
+      `${backendBaseURL}/order/create-order`,
+      { courseId },
+      { withCredentials: true }
+    );
+
+    let data = res.data.order;
+    console.log("Order created:", data);
+
+    const options = {
+      key: import.meta.env.VITE_RAZORPAY_KEY_ID,
+      amount: data.amount,
+      currency: "INR",
+      name: "EdGine",
+      description: "COURSE ENROLLMENT PAYMENT",
+      order_id: data.id,
+      handler: async function (response) {
+        console.log("Razorpay Response:", response);
+
+        try {
+          // 👉 Call verify API here with response
+          const verifyPayment = await axios.post(backendBaseURL + "/order/verify-payment", {
+            ...response,
+            courseId,
+            userId
+          }, {withCredentials:true});
+           // ✅ Redux user profile update
+    await dispatch(currentUser());  
+
+    // ✅ Local state update
+    setIsEnrolled(true);
+          toast.success(`Verify Payment: ${verifyPayment.data.message}`)
+        } catch (error) {
+          toast.error(error.response.data.message)
+        }
+      },
+      methods: {
+        upi: true,
+        card: true,
+        netbanking: true,
+        wallet: true,
+      },
+      theme: {
+        color: "#3399cc",
+      },
+    };
+
+    const rzp = new window.Razorpay(options);
+    rzp.open();
+  } catch (error) {
+    console.error("Payment init error:", error);
+  }
+};
+
+// const handle
+
+
+
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 px-4 pt-24 pb-9">
+    <div className="min-h-screen px-4 pt-24 pb-9">
       <FaArrowLeftLong
         className="absolute top-[20%] left-[5%] w-[22px] h-[22px] cursor-pointer text-gray-700 hover:text-gray-900 transition"
         onClick={() => navigate(`/courses`)}
@@ -153,7 +229,7 @@ const ViewCourse = () => {
             {!isEnrolled ? (
               <button
                 className="animate-bounce cursor-pointer flex-1 bg-gradient-to-r from-orange-700 to-purple-600 text-white py-3 px-6 rounded-lg font-semibold hover:from-blue-700 hover:to-orange-700 transition transform "
-                // onClick={() => navigate(`/enrolled-courses`)}
+                onClick={() => handleEnroll(userData._id, courseId)}
               >
                 Enroll Now
               </button>

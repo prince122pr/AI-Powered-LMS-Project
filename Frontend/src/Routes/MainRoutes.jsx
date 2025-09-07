@@ -1,4 +1,4 @@
-import { Route, Routes, Navigate } from "react-router-dom";
+import { Route, Routes, Navigate, useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 
 import Home from "../pages/Home";
@@ -21,6 +21,8 @@ import ViewCourse from "../pages/ViewCourse";
 import ViewLecture from "../pages/ViewLecture";
 
 const MainRoutes = () => {
+  const { courseId } = useParams();
+
   const user = useSelector((store) => store.user.userData);
 
   return (
@@ -53,7 +55,7 @@ const MainRoutes = () => {
       <Route path="/enrolled-courses" element={user ? <EnrolledCourses /> : <Navigate to="/login" replace />} />
 
       {/* Course Details */}
-      <Route path="/course/:courseId" element={<ViewCourse />} />
+      <Route path="/course/:courseId" element={<ViewCourse key={courseId}/>} />
       <Route path="/view-lecture/:courseId" element={<ViewLecture />} />
 
       {/* Fallback */}

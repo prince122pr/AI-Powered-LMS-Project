@@ -53,6 +53,7 @@ function CreateLectures() {
       
 
       dispatch(setLectures([...lectures, result.data.lecture]));
+      dispatch(getLectures(courseId))
       toast.success("Lecture Created");
 
       setLectureTitle("");
@@ -137,7 +138,7 @@ function CreateLectures() {
             className="flex items-center gap-2 px-4 py-2 rounded-md bg-orange-600 hover:bg-orange-700 cursor-pointer text-lg font-medium"
             onClick={() => navigate(`/course/${courseId}`)}
           >
-            <FaArrowLeft /> Back to Lectures
+            <FaArrowLeft /> Back to Course
           </button>
           <button
             className="px-5 py-2 rounded-md font-[f3] bg-black text-white cursor-pointer hover:scale-105 transition-all text-sm font-medium shadow"
