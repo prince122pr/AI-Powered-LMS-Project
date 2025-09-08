@@ -5,18 +5,25 @@ import fs from "fs";
 
 
 export const getCurrentUser = async (req, res) => {
-    try {
-    // console.log(req.user);
-    const user = await userModel.findById(req.user._id).select('-password');   // password hata ke bhejna
-    if(!user) return res.status(404).json({message: 'User Not Found!'});
-    return res.status(200).json(user);
-    
-    } catch (error) {
-        console.log(error);
-        return res.status(500).json({message: 'Getting User Error!', error})
-        
+  try {
+    const user = await userModel.findById(req.user._id)
+      .select("-password")
+       .populate("enrolledCourses"); 
+
+    if (!user) {
+      return res.status(404).json({ message: "User Not Found!" });
     }
-}
+
+    return res.status(200).json(user);
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({
+      message: "Getting User Error!",
+      error,
+    });
+  }
+};
+
 
 
 export const updateUser = async (req, res) => {

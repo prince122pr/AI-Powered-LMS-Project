@@ -102,7 +102,7 @@ const Navbar = () => {
                 </div>
 
                 <div
-                  className={`absolute top-full right-0 w-56 mt-2 bg-white/10 backdrop-blur-lg text-white rounded-xl overflow-hidden shadow-xl transform transition-all duration-300 origin-top-right border border-gray-700 ${
+                  className={`absolute top-full right-0 w-56 mt-2 bg-[#131B2B] backdrop-blur-lg text-white rounded-xl overflow-hidden shadow-xl transform transition-all duration-300 origin-top-right border border-gray-700 ${
                     profileOpen ? "opacity-100 scale-100" : "opacity-0 scale-95 pointer-events-none"
                   }`}
                 >
@@ -116,7 +116,7 @@ const Navbar = () => {
                     </div>
                     <div
                       className="flex items-center gap-3 px-4 py-2.5 rounded-lg hover:bg-white/10 cursor-pointer transition-all"
-                      onClick={() => handleNavigate("/courses")}
+                      onClick={() => handleNavigate("/enrolled-courses")}
                     >
                       <IoSchoolOutline className="text-xl text-orange-400" />
                       <span>My Courses</span>
@@ -211,7 +211,7 @@ const Navbar = () => {
 
             <div
               className="flex items-center gap-3 text-white py-2.5 px-3 rounded-lg hover:bg-white/10 hover:text-orange-400 transition-all"
-              onClick={() => handleNavigate("/courses")}
+              onClick={() => handleNavigate("/enrolled-courses")}
             >
               <IoSchoolOutline className="text-xl text-orange-400" />
               <span>My Courses</span>
