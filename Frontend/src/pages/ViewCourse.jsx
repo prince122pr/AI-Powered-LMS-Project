@@ -8,6 +8,7 @@ import axios from "axios";
 import { backendBaseURL } from "../App";
 import { toast } from "react-toastify";
 import { currentUser } from "../store/actions/userActions";
+import profImg from "../assets/Some_Images/avatar-image.webp"
 
 const ViewCourse = () => {
   const { courseId } = useParams();
@@ -148,7 +149,7 @@ const ViewCourse = () => {
               <div className="flex items-center justify-center gap-4 mb-6">
                 <img
                   src={
-                    selectedCourse?.creator?.imageUrl || "/default-avatar.png"
+                    selectedCourse?.creator?.imageUrl || profImg
                   }
                   alt={selectedCourse?.creator?.name}
                   className="w-14 h-14 rounded-full border-2 border-purple-400 shadow-md object-cover"

@@ -9,6 +9,9 @@ import { backendBaseURL } from "../App";
 import Footer from "../components/Footer";
 import { useNavigate } from "react-router-dom";
 import { currentUser } from "../store/actions/userActions";
+import { FaArrowLeftLong } from "react-icons/fa6";
+import profImg from "../assets/Some_Images/avatar-image.webp"
+
 
 const Profile = () => {
   const dispatch = useDispatch();
@@ -113,7 +116,10 @@ const Profile = () => {
 
   return (
     <div className="min-h-screen bg-gray-100 flex flex-col">
-      
+       <FaArrowLeftLong
+              className="absolute top-20 left-5 w-6 h-6 text-gray-800 cursor-pointer hover:text-gray-600 transition"
+              onClick={() => navigate("/")}
+            />
       <div className="flex-grow container mx-auto px-4 py-24 sm:px-6 lg:px-8  font-[f2]">
         <div 
           className={`max-w-5xl mx-auto transition-all duration-700 transform ${formVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}
@@ -135,8 +141,9 @@ const Profile = () => {
                       className="w-full h-full object-cover"
                     />
                   ) : (
-                    <IoPersonOutline className="text-5xl text-white" />
-                  )}
+                    <img src={profImg} />
+                  )
+                  }
                 </div>
                 
                 <div className="text-center sm:text-left">
@@ -217,15 +224,15 @@ const Profile = () => {
                   <div className="flex flex-col sm:flex-row gap-4 items-start">
                     {/* Preview */}
                     <div className="w-32 h-32 rounded-xl bg-gray-100 border-2 border-gray-300 flex items-center justify-center overflow-hidden">
-                      {previewImage ? (
+                      {profImg ? (
                         <img 
-                          src={previewImage} 
+                          src={profImg} 
                           alt="Preview" 
                           className="w-full h-full object-cover"
                         />
                       ) : userData.imageUrl ? (
                         <img 
-                          src={userData.imageUrl} 
+                          src={userData.imageUrl || profImg} 
                           alt={userData.name} 
                           className="w-full h-full object-cover"
                         />

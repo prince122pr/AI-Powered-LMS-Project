@@ -34,6 +34,14 @@ const Dashboard = () => {
   const totalStudents = courses.reduce((total, course) => 
     total + (course.enrolledStudents?.length || 0), 0);
 
+const totalEarning = courses?.reduce(
+  (total, course) => total + (course?.enrolledStudents?.length > 0 ? course?.enrolledStudents?.length*(course.price) : 0),
+  0
+) || 0;
+
+
+
+
   useEffect(() => {
     const fetchCourses = async () => {
       try {
@@ -189,7 +197,7 @@ const Dashboard = () => {
             <div className="flex items-start justify-between">
               <div>
                 <h3 className="text-gray-400 text-sm font-medium mb-1 group-hover:text-orange-300 transition-colors">Total Earning</h3>
-                <p className="text-4xl font-[f2] font-bold text-white group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-orange-400 group-hover:to-red-500 transition-all">{totalStudents}</p>
+                <p className="text-4xl font-[f2] font-bold text-white group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-orange-400 group-hover:to-red-500 transition-all">₹{totalEarning}</p>
               </div>
               <div className="p-3 bg-gradient-to-r from-orange-500/20 to-red-600/20 rounded-lg">
                 <GiReceiveMoney className="text-2xl text-orange-500" />
