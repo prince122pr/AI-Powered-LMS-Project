@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
 
 import Navbar from "./components/Navbar";
-import MainRoutes from "./Routes/MainRoutes";
+import MainRoutes from "./Routes/MainRoutes.jsx";
 import { useDispatch, useSelector } from "react-redux";
 import { currentUser } from "./store/actions/userActions";
 import ScrollToTop from "./components/ScrollToTop";
@@ -34,6 +34,16 @@ useEffect(() => {
   }
 }, [dispatch, isPublicRoute]);
 
+useEffect(() => {
+  const handler = (e) => {
+    e.preventDefault();
+    console.log("Install prompt event fired", e);
+  };
+  window.addEventListener("beforeinstallprompt", handler);
+
+  return () => window.removeEventListener("beforeinstallprompt", handler);
+}, []);
+
   
 
   useEffect(() => {
@@ -48,7 +58,7 @@ useEffect(() => {
       </div>
     );
   }
-
+  
   return (
     <div className="min-h-screen">
       <ScrollToTop />

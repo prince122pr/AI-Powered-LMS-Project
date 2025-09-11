@@ -1,20 +1,7 @@
-import { defineConfig } from 'vite'
-import react from '@vitejs/plugin-react'
-import tailwindcss from '@tailwindcss/vite'
-import { VitePWA } from 'vite-plugin-pwa'
-
-// https://vite.dev/config/
-export default defineConfig({
-  plugins: [react(),tailwindcss(), 
-    VitePWA({
-      manifest: {
-        name: "EdGine",
-        short_name: "EdGine",
-        description: "A modern Learning Management System with AI search, course management for educators, and seamless learning for students.",
-        background_color: '#131B2B',
-        theme_color: '#131B2B',
-         display: 'standalone',
-         icons: [
+{
+  "name": "EdGine",
+  "short_name": "EdGine",
+  "icons": [
     {
       "src": "icons/edgine-48x48.png",
       "sizes": "48x48",
@@ -66,8 +53,8 @@ export default defineConfig({
       "type": "image/png"
     }
   ],
-      },
-      registerType: 'autoUpdate',
-    })
-  ],
-})
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#000000"
+}
