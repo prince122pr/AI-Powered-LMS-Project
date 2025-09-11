@@ -41,7 +41,9 @@ export const registerController = async(req, res) =>{
      });
      return res.status(201).json({
         message: 'User Registered Successfully!',
-        user})
+        user,
+        token
+     })
 
      } catch (error) {
          console.log(error);
@@ -73,7 +75,8 @@ export const loginController = async(req, res) =>{
 
         return res.status(200).json({
            message: 'User Logged In Successfully!',
-           user
+           user,
+           token
         })
     }
     catch (error) {
@@ -188,7 +191,11 @@ export const googleAuthController = async(req, res) => {
         maxAge: 7 * 24 * 60 * 60 * 1000 // 7 days
      });
 
-     return res.status(200).json(user)
+     return res.status(200).json({
+  message: "Google Auth Success!",
+  user,
+  token,
+})
 
     } catch (error) {
         console.log(error);
