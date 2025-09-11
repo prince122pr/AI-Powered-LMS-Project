@@ -8,7 +8,7 @@ import { currentUser } from "./store/actions/userActions";
 import ScrollToTop from "./components/ScrollToTop";
 import { getAllCourses, getCreatorCourses } from "./store/actions/courseActions";
 
-export const backendBaseURL = "http://localhost:8000/api/v1";
+export const backendBaseURL = "https://edgine-a-lms-platform.onrender.com/api/v1";
 
 const App = () => {
   const dispatch = useDispatch();
