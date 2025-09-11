@@ -15,7 +15,7 @@ app.use(express.urlencoded({ extended: true }));  // For form-data
 
 app.use(cookieParser());
 app.use(cors({
-    origin: 'http://localhost:4173',
+    origin: 'https://edgine.onrender.com',
     credentials: true,
 }));
 
