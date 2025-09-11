@@ -3,11 +3,10 @@ import { useLocation } from "react-router-dom";
 
 import Navbar from "./components/Navbar";
 import MainRoutes from "./Routes/MainRoutes";
-import useCreatorCourses from "./customHooks/getCreatorCourses";
-import useAllCourses from "./customHooks/getAllCourses";
 import { useDispatch, useSelector } from "react-redux";
 import { currentUser } from "./store/actions/userActions";
 import ScrollToTop from "./components/ScrollToTop";
+import { getAllCourses, getCreatorCourses } from "./store/actions/courseActions";
 
 export const backendBaseURL = "http://localhost:8000/api/v1";
 
@@ -26,8 +25,16 @@ const App = () => {
     }
   }, [dispatch, user, isPublicRoute]);
 
-  useAllCourses();
-  useCreatorCourses();
+useEffect(() => {
+  if (!isPublicRoute) {
+    dispatch(currentUser()).then(() => {
+      dispatch(getAllCourses());
+      dispatch(getCreatorCourses());
+    });
+  }
+}, [dispatch, isPublicRoute]);
+
+  
 
   useEffect(() => {
     const timer = setTimeout(() => setLoadingUser(false), 500);

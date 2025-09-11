@@ -78,7 +78,7 @@ const Profile = () => {
       if (form.description) formData.append("description", form.description);
       if (form.imageFile) formData.append("imageUrl", form.imageFile);
       
-      const response = await axios.post(
+     await axios.post(
         `${backendBaseURL}/user/profile`, 
         formData, 
         { 

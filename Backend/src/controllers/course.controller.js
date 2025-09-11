@@ -131,7 +131,7 @@ export const createLecture = async (req, res) => {
   try {
     const { title, isPreviewFree } = req.body;
     const courseId = req.params.courseId;
-
+    
     if (!title || !courseId) return res.status(400).json({ message: "Title and CourseId are required" });
 
     const lectureData = { title };
@@ -145,7 +145,9 @@ export const createLecture = async (req, res) => {
     }
 
     lectureData.courseId = courseId;
+
     const lecture = await lectureModel.create(lectureData);
+    
 
     const course = await courseModel.findById(courseId);
     if (!course) return res.status(404).json({ message: "Course not found" });

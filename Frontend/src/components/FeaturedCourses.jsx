@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 
 const FeaturedCourses = () => {
   const featuredCourses = useSelector((store) => store.course.allCourses || []);
+
   const navigate = useNavigate();
 
   return (
@@ -18,7 +19,8 @@ const FeaturedCourses = () => {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {featuredCourses.map((course) => (
+          {/* just get 3 */}
+          {featuredCourses.slice(0, 3).map((course) => (
             <Link
               to={`/course/${course._id}`}
               key={course._id}
@@ -50,10 +52,10 @@ const FeaturedCourses = () => {
                   <p className="text-gray-600 text-sm">
                     By {course.creator?.name || course.instructor || "Unknown"}
                   </p>
-                  <div className="mt-1 text-xl font-[f4]">
-                    <span className="text-gray-500 line-through mr-2">₹{course.beforePrice}</span>
-                    <span className="text-red-700">₹{course.price}</span>
-                  </div>
+                    <div className="mt-1 text-xl font-[f4]">
+                      <span className="text-gray-500 line-through mr-2">₹{(course.price) + 1000}</span>
+                      <span className="text-red-700">₹{course.price}</span>
+                    </div>
                 </div>
 
                 <div className="flex justify-between items-center">
@@ -69,7 +71,7 @@ const FeaturedCourses = () => {
 
         <div className="text-center mt-12">
           <button
-            onClick={() => navigate("/")}
+            onClick={() => navigate("/courses")}
             className="px-6 py-3 rounded-xl bg-gradient-to-r from-gray-800 to-gray-900 text-white font-[f2] text-lg font-medium shadow-lg hover:shadow-gray-500/30 transition-all transform hover:-translate-y-1 hover:scale-105"
           >
             View All Courses

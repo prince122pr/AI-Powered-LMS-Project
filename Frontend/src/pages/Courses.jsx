@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import {
   FaGraduationCap,
   FaSearch,
@@ -10,20 +10,39 @@ import {
   FaChalkboardTeacher,
 } from "react-icons/fa";
 import { MdCategory } from "react-icons/md";
-import Navbar from "../../components/Navbar";
-import useAllCourses from "../../customHooks/getAllCourses";
+import Navbar from "../components/Navbar";
+import { getAllCourses } from "../store/actions/courseActions";
 
 const Courses = () => {
-  const { courses, loading, error } = useAllCourses(); // Using custom hook
+  const dispatch = useDispatch();
+  const courses = useSelector((state) => state.course.allCourses || []);
+  const user = useSelector((state) => state.user.userData);
+
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
   const [filteredCourses, setFilteredCourses] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [filters, setFilters] = useState({ category: "", level: "" });
   const [showFilters, setShowFilters] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
-  const user = useSelector((state) => state.user.userData);
 
-  // Animation effect
-  useEffect(() => setIsVisible(true), []);
+  // Fetch courses on mount
+  useEffect(() => {
+    const fetchCourses = async () => {
+      try {
+        setLoading(true);
+        await dispatch(getAllCourses());
+      } catch (err) {
+        console.log(err);
+        
+        setError("Failed to fetch courses.");
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchCourses();
+    setIsVisible(true);
+  }, [dispatch]);
 
   // Filter & search logic
   useEffect(() => {
@@ -52,7 +71,7 @@ const Courses = () => {
   }, [searchTerm, filters, courses]);
 
   // Unique categories
-  const categories = [...new Set(courses.map((course) => course.category))].filter(Boolean);
+  const categories = [...new Set(courses.map((c) => c.category))].filter(Boolean);
 
   const handleFilterChange = (filterType, value) => {
     setFilters((prev) => ({ ...prev, [filterType]: value }));
@@ -79,19 +98,16 @@ const Courses = () => {
 
   if (error) {
     return (
-      <div className="min-h-screen bg-gradient-to-b from-gray-900 via-gray-800 to-gray-900">
-        <div className="flex items-center justify-center h-[calc(100vh-80px)]">
-          <div className="bg-white/10 backdrop-blur-md p-8 rounded-xl shadow-2xl max-w-md w-full">
-            <div className="text-red-500 text-center mb-4 text-5xl">⚠️</div>
-            <h2 className="text-2xl font-[f2] text-white text-center mb-4">Something went wrong</h2>
-            <p className="text-white/80 text-center mb-6">{error}</p>
-            <button
-              onClick={() => window.location.reload()}
-              className="w-full py-3 rounded-xl bg-gradient-to-r from-orange-500 to-red-600 text-white font-medium shadow-lg hover:shadow-orange-500/30 transition-all transform hover:-translate-y-1"
-            >
-              Try Again
-            </button>
-          </div>
+      <div className="min-h-screen bg-gradient-to-b from-gray-900 via-gray-800 to-gray-900 flex items-center justify-center">
+        <div className="bg-white/10 backdrop-blur-md p-8 rounded-xl shadow-2xl max-w-md w-full text-center">
+          <div className="text-red-500 text-5xl mb-4">⚠️</div>
+          <h2 className="text-2xl font-[f2] text-white mb-4">{error}</h2>
+          <button
+            onClick={() => window.location.reload()}
+            className="w-full py-3 rounded-xl bg-gradient-to-r from-orange-500 to-red-600 text-white font-medium shadow-lg hover:shadow-orange-500/30 transition-all transform hover:-translate-y-1"
+          >
+            Try Again
+          </button>
         </div>
       </div>
     );
@@ -101,7 +117,11 @@ const Courses = () => {
     <div className="min-h-screen pt-15 bg-gradient-to-b from-gray-900 via-gray-800 to-gray-900 text-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-10">
         {/* Header */}
-        <div className={`relative mb-10 transition-all duration-1000 ${isVisible ? 'opacity-100 transform translate-y-0' : 'opacity-0 transform -translate-y-10'}`}>
+        <div
+          className={`relative mb-10 transition-all duration-1000 ${
+            isVisible ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-10"
+          }`}
+        >
           <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-6">
             <div>
               <div className="flex items-center gap-3 mb-2">
@@ -111,7 +131,7 @@ const Courses = () => {
                 </h1>
               </div>
               <p className="text-white/70 max-w-2xl">
-                Discover high-quality courses taught by expert instructors. Expand your knowledge and skills with our diverse selection of courses.
+                Discover high-quality courses taught by expert instructors.
               </p>
             </div>
 
@@ -145,8 +165,7 @@ const Courses = () => {
               onClick={() => setShowFilters(!showFilters)}
               className="px-4 py-3 rounded-lg bg-gray-700/50 border border-gray-600 text-white hover:bg-gray-700 transition-all flex items-center gap-2"
             >
-              <FaFilter className="text-orange-500" />
-              Filters
+              <FaFilter className="text-orange-500" /> Filters
             </button>
 
             {(filters.category || filters.level || searchTerm) && (
@@ -165,8 +184,7 @@ const Courses = () => {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
                   <label className="flex items-center gap-2 text-white mb-2 font-medium">
-                    <MdCategory className="text-orange-500" />
-                    Category
+                    <MdCategory className="text-orange-500" /> Category
                   </label>
                   <select
                     value={filters.category}
@@ -174,16 +192,17 @@ const Courses = () => {
                     className="w-full px-4 py-2 rounded-lg bg-gray-700/50 border border-gray-600 text-white focus:outline-none focus:ring-2 focus:ring-orange-500/50 focus:border-transparent transition-all"
                   >
                     <option value="">All Categories</option>
-                    {categories.map(category => (
-                      <option key={category} value={category}>{category}</option>
+                    {categories.map((category) => (
+                      <option key={category} value={category}>
+                        {category}
+                      </option>
                     ))}
                   </select>
                 </div>
 
                 <div>
                   <label className="flex items-center gap-2 text-white mb-2 font-medium">
-                    <FaGraduationCap className="text-orange-500" />
-                    Level
+                    <FaGraduationCap className="text-orange-500" /> Level
                   </label>
                   <select
                     value={filters.level}
@@ -203,13 +222,17 @@ const Courses = () => {
 
         {/* Courses Grid */}
         {filteredCourses.length === 0 ? (
-          <div className={`flex flex-col items-center justify-center py-16 transition-all duration-1000 delay-300 ${isVisible ? 'opacity-100 transform translate-y-0' : 'opacity-0 transform translate-y-10'}`}>
+          <div
+            className={`flex flex-col items-center justify-center py-16 transition-all duration-1000 delay-300 ${
+              isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
+            }`}
+          >
             <div className="w-20 h-20 bg-gradient-to-r from-orange-500/20 to-red-600/20 rounded-full flex items-center justify-center mb-4">
               <FaSearch className="text-3xl text-orange-500" />
             </div>
             <h3 className="text-xl font-[f2] text-white mb-2">No courses found</h3>
             <p className="text-white/70 text-center max-w-md mb-6">
-              We couldn't find any courses matching your search criteria. Try adjusting your filters or search term.
+              We couldn't find any courses matching your search criteria.
             </p>
             <button
               onClick={clearFilters}
@@ -219,23 +242,39 @@ const Courses = () => {
             </button>
           </div>
         ) : (
-          <div className={`grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 transition-all duration-1000 delay-300 ${isVisible ? 'opacity-100 transform translate-y-0' : 'opacity-0 transform translate-y-10'}`}>
-            {filteredCourses.map(course => (
-              <Link key={course._id} to={`/course/${course._id}`} className="bg-gradient-to-br from-gray-800 to-gray-900 rounded-xl shadow-xl border border-gray-700 overflow-hidden hover:border-orange-500/50 transition-all duration-300 transform hover:-translate-y-2 group">
+          <div
+            className={`grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 transition-all duration-1000 delay-300 ${
+              isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
+            }`}
+          >
+            {filteredCourses.map((course) => (
+              <Link
+                key={course._id}
+                to={`/course/${course._id}`}
+                className="bg-gradient-to-br from-gray-800 to-gray-900 rounded-xl shadow-xl border border-gray-700 overflow-hidden hover:border-orange-500/50 transition-all duration-300 transform hover:-translate-y-2 group"
+              >
                 <div className="relative h-48 overflow-hidden">
                   {course.thumbnail ? (
-                    <img src={course.thumbnail} alt={course.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                    <img
+                      src={course.thumbnail}
+                      alt={course.title}
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                    />
                   ) : (
                     <div className="w-full h-full bg-gradient-to-r from-gray-700 to-gray-800 flex items-center justify-center">
                       <FaGraduationCap className="text-5xl text-gray-500" />
                     </div>
                   )}
                   <div className="absolute top-0 right-0 m-2">
-                    <span className={`px-2 py-1 text-xs font-semibold rounded-full ${
-                      course.level === "Beginner" ? "bg-green-900/70 text-green-400 border border-green-500/30" :
-                      course.level === "Intermediate" ? "bg-blue-900/70 text-blue-400 border border-blue-500/30" :
-                      "bg-purple-900/70 text-purple-400 border border-purple-500/30"
-                    }`}>
+                    <span
+                      className={`px-2 py-1 text-xs font-semibold rounded-full ${
+                        course.level === "Beginner"
+                          ? "bg-green-900/70 text-green-400 border border-green-500/30"
+                          : course.level === "Intermediate"
+                          ? "bg-blue-900/70 text-blue-400 border border-blue-500/30"
+                          : "bg-purple-900/70 text-purple-400 border border-purple-500/30"
+                      }`}
+                    >
                       {course.level}
                     </span>
                   </div>
@@ -253,15 +292,15 @@ const Courses = () => {
                   </h3>
 
                   {course.subTitle && (
-                    <p className="text-gray-400 text-sm mb-4 line-clamp-2">
-                      {course.subTitle}
-                    </p>
+                    <p className="text-gray-400 text-sm mb-4 line-clamp-2">{course.subTitle}</p>
                   )}
 
                   <div className="flex items-center justify-between mt-4 pt-4 border-t border-gray-700">
                     <div className="flex items-center gap-2">
                       <FaUsers className="text-orange-500" />
-                      <span className="text-gray-300 text-sm">{course.enrolledStudents?.length || 0} students</span>
+                      <span className="text-gray-300 text-sm">
+                        {course.enrolledStudents?.length || 0} students
+                      </span>
                     </div>
 
                     <div className="flex items-center gap-1">
@@ -274,7 +313,10 @@ const Courses = () => {
                   </div>
 
                   {course.price ? (
-                    <div className="mt-4 text-lg font-bold text-white font-[f2]">₹{parseFloat(course.price).toFixed(2)}</div>
+                    <div className="mt-1 text-xl font-[f4]">
+                      <span className="text-gray-500 line-through mr-2">₹{course.price + 1000}</span>
+                      <span className="text-red-500">₹{course.price}</span>
+                    </div>
                   ) : (
                     <div className="mt-4 text-xl font-bold text-green-500">Free</div>
                   )}

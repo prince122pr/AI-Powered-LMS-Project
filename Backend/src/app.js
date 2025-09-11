@@ -5,6 +5,7 @@ import cors from "cors";
 import { userRouter } from "./routes/user.route.js";
 import { courseRouter } from "./routes/course.route.js";
 import { paymentRouter } from "./routes/payment.route.js";
+import reviewRouter from "./routes/review.route.js";
 
 const app = express();
 
@@ -21,6 +22,7 @@ app.use(cors({
 app.use('/api/v1/auth', authRouter);
 app.use('/api/v1/user', userRouter);
 app.use('/api/v1/course', courseRouter);
-app.use('/api/v1/order', paymentRouter)
+app.use('/api/v1/order', paymentRouter);
+app.use('/api/v1/review', reviewRouter);
 
 export default app;

@@ -27,8 +27,8 @@ const HeroSection = () => {
              </p>
              <div className="flex flex-col sm:flex-row gap-4 mt-4">
                <button 
-                 // onClick={() => navigate("/register")}
-                 className="px-8 py-3 cursor-pointer rounded-xl bg-gradient-to-r from-orange-500 to-red-600 text-white font-[f2] text-lg font-medium shadow-lg hover:shadow-orange-500/30 transition-all transform hover:-translate-y-1 hover:scale-105 flex items-center gap-3 "
+                 onClick={() => navigate("/search-ai")}
+                 className="px-8 py-3 cursor-pointer rounded-xl bg-gradient-to-r from-orange-500 to-red-600 text-white font-[f2] text-lg font-medium shadow-lg hover:shadow-orange-500/30 transition-all transform hover:-translate-y-1 hover:scale-105 flex items-center gap-3 animate-bounce"
                >
                  Search With AI <img className="w-8" src={search} alt="search-image" />
    

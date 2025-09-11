@@ -23,7 +23,7 @@ export const getLectures = (courseId) => async (dispatch) => {
   }
 };
 
-export const createLecture = (courseId, lectureData) => async () => {
+export const createLecture = (courseId, lectureData) => async (dispatch) => {
   try {
     const res = await axios.post(
       `${backendBaseURL}/course/create-lecture/${courseId}`,
@@ -35,6 +35,7 @@ export const createLecture = (courseId, lectureData) => async () => {
     );
 
 
+    dispatch(getLectures(courseId))
     return res.data;
   } catch (error) {
     console.error("Creating Lecture Error:", error);

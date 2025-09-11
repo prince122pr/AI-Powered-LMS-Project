@@ -1,7 +1,5 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
-import { backendBaseURL } from "../../App";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import {
@@ -18,7 +16,6 @@ import {
   MdAttachMoney,
 } from "react-icons/md";
 import Navbar from "../../components/Navbar";
-import { setAllCourses } from "../../store/slices/courseSlice";
 import { createCourses } from "../../store/actions/courseActions";
 
 const CreateCourses = () => {
@@ -224,6 +221,8 @@ const CreateCourses = () => {
                       Select a category
                     </option>
                     <option value="Programming">Programming</option>
+                    <option value="Web Development">Web Development</option>
+                    <option value="App Development">App Development</option>
                     <option value="AI/ML">AI/ML</option>
                     <option value="Data Science">Data Science</option>
                     <option value="Design">Design</option>

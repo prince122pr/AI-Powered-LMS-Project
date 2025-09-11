@@ -13,6 +13,7 @@ import {
 } from '../controllers/course.controller.js';
 import { isAuth } from '../middlewares/isAuth.js';
 import upload from '../middlewares/multer.js';
+import { searchWithAI } from '../controllers/search.controller.js';
 
 export const courseRouter = express.Router();
 
@@ -29,3 +30,6 @@ courseRouter.post('/create-lecture/:courseId', isAuth, upload.single("videoURL")
 courseRouter.post('/update-lecture/:lectureId', isAuth, upload.single("videoURL"), editLecture);
 courseRouter.delete('/delete-lecture/:lectureId', isAuth, removeLecture);
 courseRouter.get('/lecture/:courseId', isAuth, getCourseLecture); 
+
+// search by ai route
+courseRouter.get('/search-with-ai', searchWithAI);

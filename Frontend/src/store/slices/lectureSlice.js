@@ -18,5 +18,5 @@ const lectureSlice = createSlice({
     }
 })
 
-export const { setLectures } = lectureSlice.actions;
+export const { setLectures, getLectures} = lectureSlice.actions;
 export default lectureSlice.reducer;

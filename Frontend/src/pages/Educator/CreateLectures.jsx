@@ -17,6 +17,7 @@ function CreateLectures() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { lectures} = useSelector((state) => state.lectures);
+  
 
   const [lectureTitle, setLectureTitle] = useState("");
   const [videoFile, setVideoFile] = useState(null);
@@ -31,16 +32,16 @@ function CreateLectures() {
   }, [courseId, dispatch]);
 
   // Create Lecture Handler
-  const createLectureHandler = async () => {
+  const createLectureHandler = async (courseId) => {
     if (!lectureTitle) return toast.error("Please enter lecture title");
-
+    
     setLoading(true);
     try {
       const formData = new FormData();
       formData.append("title", lectureTitle);
       formData.append("isPreviewFree", isPreviewFree);
       if (videoFile) formData.append("videoURL", videoFile);
-
+      
       const result = await axios.post(
         `${backendBaseURL}/course/create-lecture/${courseId}`,
         formData,
@@ -49,7 +50,6 @@ function CreateLectures() {
           withCredentials: true,
         }
       )
-      // console.log(result.data);
       
 
       dispatch(setLectures([...lectures, result.data.lecture]));
@@ -61,7 +61,7 @@ function CreateLectures() {
       setIsPreviewFree(false);
     } catch (error) {
       console.error(error);
-      toast.error("Something went wrong! Maybe the file size exceeds 100 MB.");
+      toast.error("Something went wrong!");
     } finally {
       setLoading(false);
     }
@@ -136,13 +136,13 @@ function CreateLectures() {
         <div className="flex gap-4 mb-6">
           <button
             className="flex items-center gap-2 px-4 py-2 rounded-md bg-orange-600 hover:bg-orange-700 cursor-pointer text-lg font-medium"
-            onClick={() => navigate(`/course/${courseId}`)}
+            onClick={() => navigate(`/dashboard`)}
           >
             <FaArrowLeft /> Back to Course
           </button>
           <button
             className="px-5 py-2 rounded-md font-[f3] bg-black text-white cursor-pointer hover:scale-105 transition-all text-sm font-medium shadow"
-            onClick={createLectureHandler}
+            onClick={()=>createLectureHandler(courseId)}
             disabled={loading}
           >
             {loading ? <ClipLoader size={20} color="white" /> : "+ Create Lecture"}
