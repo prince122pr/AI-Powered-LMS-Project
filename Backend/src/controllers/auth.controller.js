@@ -34,9 +34,9 @@ export const registerController = async(req, res) =>{
      let token = genToken(user);
      res.cookie('token', token, {
         httpOnly: true,
-        secure: false,
+        secure: true,
         // secure: process.env.NODE_ENV === "production", // prod mein true, dev mein false,
-        sameSite: 'lax', 
+        sameSite: 'none', 
         maxAge: 7 * 24 * 60 * 60 * 1000 // 7 days
      });
      return res.status(201).json({
@@ -65,9 +65,9 @@ export const loginController = async(req, res) =>{
         let token = genToken(user);
         res.cookie('token', token, {
            httpOnly: true,
-           secure: false,
+           secure: true,
            // secure: process.env.NODE_ENV === "production", // prod mein true, dev mein false,
-           sameSite: 'lax', 
+           sameSite: 'none', 
            maxAge: 7 * 24 * 60 * 60 * 1000 // 7 days
         });
 
@@ -88,9 +88,9 @@ export const logoutController = (req, res) =>{
     try {
         res.clearCookie('token', {
             httpOnly: true,
-            secure: false,
+            secure: true,
             // secure: process.env.NODE_ENV === "production", // prod mein true, dev mein false,
-            sameSite: 'lax', 
+            sameSite: 'none', 
          });
          return res.status(200).json({message: 'Logged Out Successfully!'})
     } catch (error) {
@@ -182,9 +182,9 @@ export const googleAuthController = async(req, res) => {
          let token = genToken(user);
      res.cookie('token', token, {
         httpOnly: true,
-        secure: false,
+        secure: true,
         // secure: process.env.NODE_ENV === "production", // prod mein true, dev mein false,
-        sameSite: 'lax', 
+        sameSite: 'none', 
         maxAge: 7 * 24 * 60 * 60 * 1000 // 7 days
      });
 
