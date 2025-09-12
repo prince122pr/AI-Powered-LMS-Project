@@ -8,6 +8,7 @@ import { paymentRouter } from "./routes/payment.route.js";
 import reviewRouter from "./routes/review.route.js";
 
 const app = express();
+app.set('trust proxy', 1); // <--- Add this line!
 
 app.use(express.json());       // For JSON
 app.use(express.urlencoded({ extended: true }));  // For form-data
