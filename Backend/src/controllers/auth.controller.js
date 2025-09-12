@@ -9,8 +9,10 @@ const isProd = process.env.NODE_ENV === "production";
 // 🔑 Cookie options ek jagah define kar liye
 const cookieOptions = {
   httpOnly: true,
-  secure: isProd,                       // prod me true (HTTPS required)
-  sameSite: isProd ? "None" : "Lax",    // Safari/Chrome ke liye None
+  secure: isProd,                       // prod me HTTPS required
+  sameSite: "None",                     // cross-site ke liye always None
+  domain: "edgine.onrender.com",        // ✅ frontend domain (not backend)
+  path: "/",                            // sab routes ke liye
   maxAge: 7 * 24 * 60 * 60 * 1000,      // 7 din
 };
 
