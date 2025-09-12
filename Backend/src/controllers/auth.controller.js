@@ -113,3 +113,19 @@ export const googleAuthController = async (req, res) => {
     return res.status(500).json({ message: "Google Auth Error", error });
   }
 };
+
+// ================= Logout =================
+export const logoutController = (req, res) => {
+  try {
+    res.clearCookie("token", {
+      httpOnly: true,
+      secure: isProd,              // production me true
+      sameSite: isProd ? "None" : "Lax",
+    });
+
+    return res.status(200).json({ message: "Logged Out Successfully!" });
+  } catch (error) {
+    return res.status(500).json({ message: "Error in Logging Out!", error });
+  }
+};
+
