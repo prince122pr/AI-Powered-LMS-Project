@@ -3,7 +3,7 @@ import path from "path";
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, "uploads/"); // temporary folder before uploading to ImageKit
+    cb(null, "upload/"); // temporary folder before uploading to ImageKit
   },
   filename: (req, file, cb) => {
     const uniqueName = `${Date.now()}_${file.originalname}`;  //ensures uniqueness
