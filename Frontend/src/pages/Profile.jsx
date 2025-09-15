@@ -69,38 +69,37 @@ const Profile = () => {
   };
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
-    setLoading(true);
-    
-    try {
-      const formData = new FormData();
-      formData.append("name", form.name);
-      if (form.description) formData.append("description", form.description);
-      if (form.imageFile) formData.append("imageUrl", form.imageFile);
-      
-     await axios.post(
-        `${backendBaseURL}/user/profile`, 
-        formData, 
-        { 
-          withCredentials: true,
-          headers: { "Content-Type": "multipart/form-data" }
-        }
-      );
-      
-      dispatch(currentUser());
-      setLoading(false);
-      toast.success("Profile updated successfully!", {
-        position: "bottom-right"
-      });
-      
-      // Clear image selection after successful update
-      clearImageSelection();
-      
-    } catch (error) {
-      console.error("Profile update error:", error);
-      setLoading(false);
-      toast.error(error.response?.data?.message || "Failed to update profile");
-    }
+  e.preventDefault();
+  setLoading(true);
+
+  try {
+    const formData = new FormData();
+    formData.append("name", form.name);
+    if (form.description) formData.append("description", form.description);
+    if (form.imageFile) formData.append("imageUrl", form.imageFile);
+
+    const { data } = await axios.post(
+      `${backendBaseURL}/user/profile`,
+      formData,
+      {
+        withCredentials: true,
+        headers: { "Content-Type": "multipart/form-data" },
+      }
+    );
+
+    // Update Redux state with latest user
+    dispatch(currentUser());
+    setLoading(false);
+    toast.success("Profile updated successfully!", { position: "bottom-right" });
+
+    // Clear image selection
+    clearImageSelection();
+  } catch (error) {
+    console.error("Profile update error:", error);
+    setLoading(false);
+    toast.error(error.response?.data?.message || "Failed to update profile");
+  }
+
   };
 
   if (!userData) {
