@@ -90,9 +90,17 @@ const CreateCourses = () => {
         formData.append("thumbnail", courseData.thumbnail);
       }
 
-      dispatch(createCourses(formData));
+      // ⬇ Wait for the response from createCourses
+    const res = await dispatch(createCourses(formData)).unwrap(); 
+
+    // make sure the createCourses action returns `course` object with `_id`
+    if (res?.course?._id) {
+      toast.success("Course created successfully!");
+      navigate(`/course/${res.course._id}`); // ⬅️ go directly to ViewCourse
+    } else {
       toast.success("Course created successfully!");
       navigate("/dashboard");
+    }
     } catch (error) {
       console.error("Error creating course:", error);
       toast.error(error.response?.data?.message || "Failed to create course");
