@@ -1,4 +1,6 @@
 import logo from "../assets/EdGine_Logos/logo-png.png";
+import { Link } from "react-router-dom";
+
 const Footer = () => {
   return (
     <footer className="py-12 px-4 w-full sm:px-6 md:px-12 bg-black text-white flex flex-col items-center">
@@ -28,30 +30,56 @@ const Footer = () => {
           <div>
             <h3 className="text-lg font-[f2] font-bold mb-4">Courses</h3>
             <ul className="space-y-2 font-[f3]">
-              <li><a href="#" className="text-gray-400 hover:text-orange-500 transition-colors">Web Development</a></li>
-              <li><a href="#" className="text-gray-400 hover:text-orange-500 transition-colors">Data Science</a></li>
-              <li><a href="#" className="text-gray-400 hover:text-orange-500 transition-colors">Digital Marketing</a></li>
-              <li><a href="#" className="text-gray-400 hover:text-orange-500 transition-colors">UX/UI Design</a></li>
-              <li><a href="#" className="text-gray-400 hover:text-orange-500 transition-colors">Mobile Development</a></li>
+              
+              <li> <Link to="/courses?category=Web Development" className="text-gray-400 hover:text-orange-500 transition-colors">
+              Web Development
+              </Link>
+              </li>
+              
+              <li>
+             <Link to="/courses?category=Data Science" className="text-gray-400 hover:text-orange-500 transition-colors">
+             Data Science
+             </Link>
+             </li>
+              
+               <li>
+             <Link to="/courses?category=Digital Marketing" className="text-gray-400 hover:text-orange-500 transition-colors">
+             Digital Marketing
+             </Link>
+             </li>
+
+               <li>
+             <Link to="/courses?category=UX/UI Design" className="text-gray-400 hover:text-orange-500 transition-colors">
+             UX/UI Design
+             </Link>
+             </li>
+              
+              
+              <li>
+             <Link to="/courses?category=Mobile Development" className="text-gray-400 hover:text-orange-500 transition-colors">
+             Mobile Development
+             </Link>
+             </li>
+              
             </ul>
           </div>
           
           <div>
             <h3 className="text-lg font-[f2] font-bold mb-4">Company</h3>
             <ul className="space-y-2 font-[f3]">
-              <li><a href="#" className="text-gray-400 hover:text-orange-500 transition-colors">About Us</a></li>
-              <li><a href="#" className="text-gray-400 hover:text-orange-500 transition-colors">Courses</a></li>
-              <li><a href="#" className="text-gray-400 hover:text-orange-500 transition-colors">Contact Us</a></li>
+              <li><Link to="/about" className="text-gray-400 hover:text-orange-500 transition-colors">About Us</Link></li>
+              <li><Link to="/courses" className="text-gray-400 hover:text-orange-500 transition-colors">Courses</Link></li>
+              <li><Link to="/contact" className="text-gray-400 hover:text-orange-500 transition-colors">Contact Us</Link></li>
             </ul>
           </div>
           
           <div>
             <h3 className="text-lg font-[f2] font-bold mb-4">Legal</h3>
             <ul className="space-y-2 font-[f3]">
-              <li><a href="#" className="text-gray-400 hover:text-orange-500 transition-colors">Terms of Service</a></li>
-              <li><a href="#" className="text-gray-400 hover:text-orange-500 transition-colors">Privacy Policy</a></li>
-              <li><a href="#" className="text-gray-400 hover:text-orange-500 transition-colors">Cookie Policy</a></li>
-              <li><a href="#" className="text-gray-400 hover:text-orange-500 transition-colors">Copyright</a></li>
+              <li className="text-gray-400 hover:text-orange-500 transition-colors">Terms of Service</li>
+              <li className="text-gray-400 hover:text-orange-500 transition-colors">Privacy Policy</li>
+              <li className="text-gray-400 hover:text-orange-500 transition-colors">Cookie Policy</li>
+              <li className="text-gray-400 hover:text-orange-500 transition-colors">Copyright</li>
             </ul>
           </div>
         </div>
