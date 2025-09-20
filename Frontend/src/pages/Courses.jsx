@@ -1,6 +1,8 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
+import { useLocation } from "react-router-dom";   //gives us the current URL's query string.
+
 import {
   FaGraduationCap,
   FaSearch,
@@ -14,6 +16,11 @@ import Navbar from "../components/Navbar";
 import { getAllCourses } from "../store/actions/courseActions";
 
 const Courses = () => {
+
+  const location = useLocation();
+  const query = new URLSearchParams(location.search);   //URLSearchParams is a native browser API that helps parse query strings into key-value pairs.
+  const category = query.get("category"); // "Web Development" if URL is /courses?category=Web%20Development
+  
   const dispatch = useDispatch();
   const courses = useSelector((state) => state.course.allCourses || []);
   const user = useSelector((state) => state.user.userData);
@@ -25,6 +32,13 @@ const Courses = () => {
   const [filters, setFilters] = useState({ category: "", level: "" });
   const [showFilters, setShowFilters] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
+
+  // Use category to filter courses providing by home page footer click
+  useEffect(() => {
+    if (category) {
+      setFilters({ category });
+    }
+  }, [category]);
 
   // Fetch courses on mount
   useEffect(() => {
